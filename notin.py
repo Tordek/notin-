@@ -14,15 +14,10 @@ class DemoException(dbus.DBusException):
 class SomeObject(service.TimeoutObject):
     def __init__(self, *p, **k):
         super(SomeObject, self).__init__(*p, **k)
-        print "service object constructed"
-
-    def __del__(self):
-        print "service object deleted"
 
     @dbus.service.method("org.freedesktop.Notifications",
                          out_signature='as', in_signature='')
     def GetCapabilities(self):
-        print "GetCapabilities"
         return ["body"]
 
     @dbus.service.method("org.freedesktop.Notifications",
@@ -34,13 +29,11 @@ class SomeObject(service.TimeoutObject):
     @dbus.service.method("org.freedesktop.Notifications",
                          out_signature='', in_signature='u')
     def CloseNotification(self, notification_id):
-        print "CloseNotification"
-        return ("Hello Tuple", " from example-service.py")
+        return
 
     @dbus.service.method("org.freedesktop.Notifications",
                          out_signature='', in_signature='sss')
     def GetServerInformation(self, name, vendor, version):
-        print "GetServerInformation"
         return {"first": "Hello Dict", "second": " from example-service.py"}
 
     @dbus.service.method("org.freedesktop.Notifications",
@@ -58,5 +51,4 @@ if __name__ == '__main__':
 
     mainloop = gobject.MainLoop()
     service.set_mainloop(mainloop)
-    print "Running example service."
     mainloop.run()
