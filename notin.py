@@ -70,7 +70,8 @@ class MessageQueue(object):
                 self.queue.append(self.current_message)
 
             self.current_message = self.queue.pop(0)
-            print "%(app_name)s: %(body)s" % self.messages[self.current_message]
+            print (u"%(app_name)s: %(body)s" % self.messages[self.current_message]).encode('utf-8')
+
 
         return True
 
