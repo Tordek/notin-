@@ -46,9 +46,9 @@ class MessageQueue(object):
 
         if message["expire_timeout"] != 0:
             if message["expire_timeout"] == -1:
-                message["expire_timeout"] = 3000000
+                message["expire_timeout"] = 5000
 
-            message["expire_timeout"] -= 1000 * delta
+            message["expire_timeout"] -= delta
             if message["expire_timeout"] <= 0:
                 return True
 
