@@ -70,7 +70,7 @@ class MessageQueue(object):
                 self.queue.append(self.current_message)
 
             self.current_message = self.queue.pop(0)
-            print (u"%(app_name)s: %(body)s" % self.messages[self.current_message]).encode('utf-8')
+            print (u"[%(app_name)s] %(summary)s: %(body)s" % self.messages[self.current_message]).encode('utf-8')
 
 
         return True
@@ -107,10 +107,9 @@ class Notin(service.TimeoutObject):
         return
 
     @dbus.service.method("org.freedesktop.Notifications",
-                         out_signature='', in_signature='ssss')
-    def GetServerInformation(self, name, vendor, version, spec_version):
-        #TODO: handle out parameters?
-        return
+                         out_signature='ssss', in_signature='')
+    def GetServerInformation(self):
+        return "notin'", "Tordek", "0.0.1", "0.9"
 
     @dbus.service.signal("org.freedesktop.Notifications",
                          signature='uu')
