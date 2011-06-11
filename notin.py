@@ -103,12 +103,13 @@ class Notin(dbus.service.Object):
                          out_signature='', in_signature='u')
     def CloseNotification(self, notification_id):
         self.queue.dequeue(notification_id)
+        self.NotificationClosed(notification_id, 3)
         return
 
     @dbus.service.method("org.freedesktop.Notifications",
                          out_signature='ssss', in_signature='')
     def GetServerInformation(self):
-        return "notin'", "Tordek", "0.0.1", "0.9"
+        return "notin'", "Tordek", "0.0.1", "1.2"
 
     @dbus.service.signal("org.freedesktop.Notifications",
                          signature='uu')
