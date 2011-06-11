@@ -6,8 +6,6 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 
-import service
-
 import random
 
 class MessageQueue(object):
@@ -76,9 +74,9 @@ class MessageQueue(object):
         return True
 
 
-class Notin(service.TimeoutObject):
-    def __init__(self, queue, *p, **k):
-        super(Notin, self).__init__(*p, **k)
+class Notin(dbus.service.Object):
+    def __init__(self, queue, bus, object_path):
+        dbus.service.Object.__init__(self, bus, object_path)
         self.queue = queue
 
     @dbus.service.method("org.freedesktop.Notifications",
@@ -87,8 +85,9 @@ class Notin(service.TimeoutObject):
         return ["body"]
 
     @dbus.service.method("org.freedesktop.Notifications",
-                         out_signature='u', in_signature='susssasa{ss}u')
-    def Notify(self, app_name, replaces_id, app_icon, summary, body, actions, hints, expire_timeout):
+                         out_signature='u', in_signature='susssasa{sv}u')
+    def Notify(self, app_name, replaces_id, app_icon, summary, body, actions,
+            hints, expire_timeout):
         notification = {"app_name": app_name,
                         "replaces_id": replaces_id,
                         "app_icon": app_icon,
@@ -122,11 +121,11 @@ if __name__ == '__main__':
     queue = MessageQueue()
     system_bus = dbus.SessionBus()
 
-    name = dbus.service.BusName("org.freedesktop.Notifications", system_bus)
+    name = dbus.service.BusName("org.freedesktop.Notifications",
+            system_bus, replace_existing=True, do_not_queue=True)
     obj = Notin(queue, system_bus, '/org/freedesktop/Notifications')
 
     mainloop = gobject.MainLoop()
-    service.set_mainloop(mainloop)
 
     gobject.timeout_add(1000, lambda: queue.update(1000))
     mainloop.run()
