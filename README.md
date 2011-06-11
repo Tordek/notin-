@@ -21,9 +21,10 @@ Using notin'
 
 Notin's meant to be used with a [dzen][dzen] window: just pipe its output through:
 
-`python notin.py | dzen2`
+`python -u notin.py | dzen2`
 
-Your notifications will appear on your dzen bar.
+Your notifications will appear on your dzen bar. Note the `-u`: Without it,
+Python will buffer `stdout`, and you won't get updates on time!
 
 [protocol]: http://www.galago-project.org/specs/notification/0.9/x408.html
 [xmonad]: http://xmonad.org/
