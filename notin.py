@@ -116,7 +116,7 @@ class Notin(dbus.service.Object):
     def NotificationClosed(self, id, reason):
         return
 
-if __name__ == '__main__':
+def main():
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
     queue = MessageQueue()
@@ -130,3 +130,6 @@ if __name__ == '__main__':
 
     gobject.timeout_add(1000, lambda: queue.update(1000))
     mainloop.run()
+
+if __name__ == '__main__':
+    main()
