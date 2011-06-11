@@ -22,7 +22,7 @@ class MessageQueue(object):
         key = random.randint(0, 65535)
 
         while key in self.messages:
-            key = random.rand()
+            key = random.randint(0, 65535)
 
         self.messages[key] = message
         self.queue.append(key)
