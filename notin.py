@@ -32,16 +32,16 @@ class MessageQueue(object):
         return key
 
     def dequeue(self, message_id):
-        if self.current_message == message_id:
-            self.current_message = None
-            if not self.queue:
-                print
-        else:
+        if message_id in self.queue:
             self.queue.remove(message_id)
 
-        del self.messages[message_id]
+        if message_id in self.messages:
+            del self.messages[message_id]
 
     def expired_message(self, message_id, delta):
+        if message_id not in self.messages:
+            return True
+
         message = self.messages[message_id]
 
         if message["expire_timeout"] != 0:
@@ -62,7 +62,7 @@ class MessageQueue(object):
             if self.expired_message(self.current_message, delta):
                 self.dequeue(self.current_message)
                 self.current_message = None
-                if not queue:
+                if not self.queue:
                     print
 
         if self.queue:
