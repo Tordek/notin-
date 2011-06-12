@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+"""notin': A simple org.freedesktop.Notification listener."""
+
 import gobject
 
 import dbus
@@ -68,7 +70,8 @@ class MessageQueue(object):
                 self.queue.append(self.current_message)
 
             self.current_message = self.queue.pop(0)
-            print (u"[%(app_name)s] %(summary)s: %(body)s" % self.messages[self.current_message]).encode('utf-8')
+            print (u"[%(app_name)s] %(summary)s: %(body)s" %
+                    self.messages[self.current_message]).encode('utf-8')
 
 
         return True
