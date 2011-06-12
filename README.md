@@ -21,7 +21,7 @@ Using notin'
 
 Notin's meant to be used with a [dzen][dzen] window: just pipe its output through:
 
-`python -u notin.py | dzen2`
+`python notin.py | dzen2`
 
 Your notifications will appear on your dzen bar. Note the `-u`: Without it,
 Python will buffer `stdout`, and you won't get updates on time!

@@ -8,6 +8,7 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 
+import sys
 import random
 
 class MessageQueue(object):
@@ -64,6 +65,7 @@ class MessageQueue(object):
                 self.current_message = None
                 if not self.queue:
                     print
+                    sys.stdout.flush()
 
         if self.queue:
             if self.current_message:
@@ -72,6 +74,7 @@ class MessageQueue(object):
             self.current_message = self.queue.pop(0)
             print (u"[%(app_name)s] %(summary)s: %(body)s" %
                     self.messages[self.current_message]).encode('utf-8')
+            sys.stdout.flush()
 
 
         return True
