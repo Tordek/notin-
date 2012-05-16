@@ -47,15 +47,12 @@ class MessageQueue(object):
 
         message = self.messages[message_id]
 
-        if message["expire_timeout"] != 0:
-            if message["expire_timeout"] == -1:
-                message["expire_timeout"] = 5000
+        if message["expire_timeout"] == 0:
+            return False
 
-            message["expire_timeout"] -= delta
-            if message["expire_timeout"] <= 0:
-                return True
+        message["expire_timeout"] -= delta
 
-        return False
+        return message["expire_timeout"] <= 0
 
     def update(self, delta):
         if not (self.current_message or self.queue):
@@ -97,6 +94,10 @@ class Notin(dbus.service.Object):
                          out_signature='u', in_signature='susssasa{sv}u')
     def Notify(self, app_name, replaces_id, app_icon, summary, body, actions,
             hints, expire_timeout):
+
+        if expire_timeout == -1:
+            expire_timeout = 5000
+
         notification = {"app_name": app_name,
                         "replaces_id": replaces_id,
                         "app_icon": app_icon,
