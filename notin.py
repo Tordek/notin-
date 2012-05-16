@@ -8,6 +8,8 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 
+import re
+
 import sys
 import random
 
@@ -72,8 +74,9 @@ class MessageQueue(object):
                 self.queue.append(self.current_message)
 
             self.current_message = self.queue.pop(0)
-            print (u"[%(app_name)s] %(summary)s: %(body)s" %
-                    self.messages[self.current_message]).encode('utf-8')
+            message = u"[%(app_name)s] %(summary)s: %(body)s" % self.messages[self.current_message]
+            message = re.sub(r'\n', ' ', message)
+            print message.encode('utf-8')
             sys.stdout.flush()
 
 
@@ -102,6 +105,7 @@ class Notin(dbus.service.Object):
                         "actions": actions,
                         "hints": hints,
                         "expire_timeout": expire_timeout}
+
 
         return self.queue.enqueue(replaces_id, notification)
 
