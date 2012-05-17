@@ -11,7 +11,7 @@ import dbus.mainloop.glib
 import re
 
 import sys
-import random
+import itertools
 
 class MessageQueue(object):
     def __init__(self):
@@ -19,16 +19,24 @@ class MessageQueue(object):
         self.queue = []
         self.current_message = None
 
+        # Overkill?
+        self.keys = itertools.cycle(xrange(1, 2**32))
+
+    def next_key(self):
+        while True:
+            i = self.keys.next()
+
+            if i not in self.messages:
+                break
+
+        return i
+
     def enqueue(self, replaces_id, message):
         if replaces_id in self.messages:
             self.messages[replaces_id] = message
             return replaces_id
 
-        key = random.randint(0, 65535)
-
-        while key in self.messages:
-            key = random.randint(0, 65535)
-
+        key = self.next_key()
         self.messages[key] = message
         self.queue.append(key)
 
